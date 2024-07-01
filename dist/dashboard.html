@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - Tasks Buddy</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="css/dashboard_style.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+    <!-- Top navbar -->
+    <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
+        <!-- ***** Need to link to home page ***** -->
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navbar => User -->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">User info.</a></li>
+                    <!-- ***** Need to link to user page ***** -->
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <!-- ***** Need to link to logout page ***** -->
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+    <!-- Full Body -->
+    <div id="layoutSidenav">
+        <!-- side bar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading"></div>
+                        <a class="nav-link" href="dashboard.html">
+                            <!-- ***** Need to check link to dashboard page ***** -->
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <!-- <div class="sb-sidenav-menu-heading"></div> -->
+                        <a class="nav-link collapsed" href="projects.html" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Projects
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="projects.html"><i class="fa-solid fa-plus"></i> Projects
+                                    Cards</a>
+                                <div>
+
+                                </div>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="note.html">
+                            <div class="sb-nav-link-icon"><i class="fa-regular fa-note-sticky"
+                                    style="color: #769fcd;"></i></div>
+                            Notes
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Dashboard body -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Dashboard</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">All in your hand</li>
+                    </ol>
+                    <!-- Card - Tasks details container -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body"><i class="fa-solid fa-list-check"></i> All Tasks
+                                    <div>40 Tasks</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-warning text-white mb-4">
+                                <div class="card-body"><i class="fa-solid fa-list-check"></i>To Do Tasks
+                                    <div>30 Tasks</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body"><i class="fa-solid fa-list-check"></i>In progress Tasks
+                                    <div>20 Tasks</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-danger text-white mb-4">
+                                <div class="card-body"><i class="fa-solid fa-list-check"></i>Completed Tasks
+                                    <div>10 Tasks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Projects view -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            All Tasks
+
+                            <form id="sortForm"
+                                class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Search for..."
+                                        aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                                            class="fas fa-search"></i></button>
+                                </div>
+                            </form>
+                            <select id="sort-by">
+                                <option id="all" value="">All</option>
+                                <option id="to_do" value="status1">To Do</option>
+                                <option id="Inprogress" value="status2">Inprogress</option>
+                                <option id="Completed" value="status3">Completed</option>
+                                <option id="Older_to_Newer" value="due-date">Older to Newer</option>
+                                <option id="Newer_to_older" value="due-date">Newer to older</option>
+                            </select>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Need to make 
+                                filter & sort  -->
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Task</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>History</th>
+                                    </tr>
+                                </thead>
+                                <!-- <tbody>
+                                        <tr>
+                                            <td>Login</td>
+                                            <td>HTML, CSS layout</td>
+                                            <td>
+                                                <select>
+                                                    <option value="option1">To Do</option>
+                                                    <option value="option2">In progress</option>
+                                                    <option value="option3">Compleated</option>
+                                                </select>
+                                            </td>
+                                            <td>2011/04/25</td>
+                                            <td><a id="linkHistory" href="#">>></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Login</td>
+                                            <td>User data - json</td>
+                                            <td>
+                                                <select>
+                                                    <option value="option1">To Do</option>
+                                                    <option value="option2">In progress</option>
+                                                    <option value="option3">Compleated</option>
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td><a id="linkHistory" href="#">>></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option value="option1">To Do</option>
+                                                    <option value="option2">In progress</option>
+                                                    <option value="option3">Compleated</option>
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td><a id="linkHistory" href="#">>></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option value="option1">To Do</option>
+                                                    <option value="option2">In progress</option>
+                                                    <option value="option3">Compleated</option>
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td><a id="linkHistory" href="#">>></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option value="option1">To Do</option>
+                                                    <option value="option2">In progress</option>
+                                                    <option value="option3">Compleated</option>
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td><a id="linkHistory" href="#">>></a></td>
+                                        </tr> -->
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; OCA Team2 &copy; 2024</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+    <script>
+
+        const sort_by_select = document.getElementById('sort-by')
+        const all_option = document.getElementById('all')
+        const Inprogress_option = document.getElementById('Inprogress')
+        const Completed_option = document.getElementById('Completed')
+        const Older_to_Newer_option = document.getElementById('Older_to_Newer')
+        const Newer_to_older_option = document.getElementById('Newer_to_older')
+
+        let taskDate = new Date()
+        let taskDueDate = taskDate.getDay() + '/' + taskDate.getMonth() + '/' + taskDate.getFullYear()
+
+        let users = [{
+            email: 'abdallah.awaysheh@taskbuddy.com', password: '123', name: 'AbdallahAwaysheh', userData: [
+                {
+                    projectName: 'project1', projectDescription: 'description',
+                    tasks: [
+                        { taskName: 'task1', status: 'To Do', dueDate: new Date(1111111111111), taskDescription: 'description' },
+                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date(1211111111111), taskDescription: 'description' }]
+                },
+                {
+                    projectName: 'project2', projectDescription: 'description', tasks: [
+                        { taskName: 'task1', status: 'Completed', dueDate: new Date(1311111111111), taskDescription: 'description' },
+                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date(1411111111111), taskDescription: 'description' }]
+                },
+                {
+                    projectName: 'project3', projectDescription: 'description', tasks: [
+                        { taskName: 'task1', status: 'Completed', dueDate: new Date(1151111111111), taskDescription: 'description' },
+                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date(1611111111111), taskDescription: 'description' },
+                        { taskName: 'task5', status: 'Completed', dueDate: new Date(1171123111111), taskDescription: 'description' }]
+                }
+            ]
+        }];
+
+        function extractTaskInfo(users) {
+            const taskInfoArray = [];
+            users.forEach(user => {
+                user.userData.forEach(project => {
+                    project.tasks.forEach(task => {
+                        taskInfoArray.push({
+                            projectName: project.projectName,
+                            taskName: task.taskName,
+                            dueDate: task.dueDate,
+                            status: task.status
+                        });
+                    });
+                });
+            });
+            return taskInfoArray;
+        };
+
+        localStorage.setItem('users', JSON.stringify(users));
+
+        const tableDiv = document.querySelector('.table-bordered thead')
+        const userProjects = JSON.parse(localStorage.getItem('users'));
+
+        const task_foreach_method = function () {
+
+        }
+
+        const listElement = document.createElement('tbody')
+        function dashBoardProjectList(users) {
+            users.forEach(user => {
+                user.userData.forEach(project => {
+                    project.tasks.forEach(task => {
+                        let statusArray = ['Completed', 'To Do', 'Inprogress']
+                        let activeStatus = statusArray.indexOf(task.status)
+                        listElement.innerHTML += `<tr>
+                        <td>${project.projectName}</td>
+                        <td>${task.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${task.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                    })
+                    tableDiv.after(listElement)
+                })
+            })
+        }
+
+        const dashboardButton = document.querySelector('.nav-link').addEventListener('click', dashBoardProjectList(userProjects))
+
+
+        const search_input = document.querySelector('.form-control')
+
+        search_input.addEventListener('input', e => {
+            sort_by_select.value = '';
+            const value = e.target.value.toLowerCase();
+            document.querySelector('tbody').innerHTML = ''
+            users.forEach(user => {
+                user.userData.forEach(project => {
+                    const taskArray = project.tasks.map(x => x.taskName)
+                    console.log(taskArray)
+                    if (project.projectName.toLowerCase().includes(value)) {
+                        project.tasks.forEach(task => {
+                            let statusArray = ['Completed', 'To Do', 'Inprogress']
+                            let activeStatus = statusArray.indexOf(task.status)
+                            listElement.innerHTML += `<tr>
+                        <td>${project.projectName}</td>
+                        <td>${task.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${task.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                        })
+                        tableDiv.after(listElement)
+                    } else {
+                        project.tasks.forEach(task => {
+                            if (task.taskName.toLowerCase().includes(value)) {
+                                let statusArray = ['Completed', 'To Do', 'Inprogress']
+                                let activeStatus = statusArray.indexOf(task.status)
+                                listElement.innerHTML += `<tr>
+                        <td>${project.projectName}</td>
+                        <td>${task.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${task.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                            }
+
+                        })
+                        tableDiv.after(listElement)
+                    }
+                })
+            })
+        })
+
+        //// sort by status
+
+        sort_by_select.addEventListener('click', e => {
+            document.querySelector('.form-control').value = ''
+            let status_id = e.target.getAttribute('id')
+            if (status_id === 'all') {
+                document.querySelector('tbody').innerHTML = ''
+                dashBoardProjectList(userProjects)
+                search_input.value = ''
+            } else if (status_id === 'to_do' || status_id === 'Inprogress' || status_id === 'Completed') {
+                document.querySelector('tbody').innerHTML = ''
+                users.forEach(user => {
+                    user.userData.forEach(project => {
+                        project.tasks.forEach(task => {
+                            let statusArray = ['Completed', 'To Do', 'Inprogress']
+                            let activeStatus = statusArray.indexOf(task.status)
+                            if (e.target.innerHTML === task.status) {
+                                listElement.innerHTML += `<tr>
+                        <td>${project.projectName}</td>
+                        <td>${task.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${task.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                            }
+                        })
+                        tableDiv.after(listElement)
+                    })
+                })
+
+            } else if (status_id === 'Older_to_Newer') {
+                document.querySelector('tbody').innerHTML = ''
+
+
+                const taskInfoArray = extractTaskInfo(users).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+                console.log(taskInfoArray);
+
+                function Older_to_Newer_Function(users) {
+                    users.forEach(user => {
+                        let statusArray = ['Completed', 'To Do', 'Inprogress']
+                        let activeStatus = statusArray.indexOf(user.status)
+                        listElement.innerHTML += `<tr>
+                        <td>${user.projectName}</td>
+                        <td>${user.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${user.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                    })
+                    tableDiv.after(listElement)
+                }
+                Older_to_Newer_Function(taskInfoArray)
+
+            } else if (status_id === 'Newer_to_older') {
+                document.querySelector('tbody').innerHTML = ''
+
+
+                const taskInfoArray = extractTaskInfo(users).sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+                console.log(taskInfoArray);
+
+                function Newer_to_Older_Function(users) {
+                    users.forEach(user => {
+                        let statusArray = ['Completed', 'To Do', 'Inprogress']
+                        let activeStatus = statusArray.indexOf(user.status)
+                        listElement.innerHTML += `<tr>
+                        <td>${user.projectName}</td>
+                        <td>${user.taskName}</td>
+                        <td>
+                            <select>
+                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+                                <option value="option2">${statusArray.pop()}</option>
+                                <option value="option3">${statusArray.pop()}</option>
+                                </select>
+                                </td>
+                                <td>${user.dueDate}</td>
+                                <td><a id="linkHistory" href="#">>></a></td>
+                                </tr>`
+                    })
+                    tableDiv.after(listElement)
+                }
+                Newer_to_Older_Function(taskInfoArray)
+
+            }
+        })
+
+        //////
+
+
+    </script>
+
+    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+</body>
+
+</html>
