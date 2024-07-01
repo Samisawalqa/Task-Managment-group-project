@@ -12,7 +12,7 @@
     <link href="css/dashboard_style.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
-        .modal{
+        .modal {
             display: none;
         }
     </style>
@@ -34,7 +34,6 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">User info.</a></li>
                     <!-- ***** Need to link to user page ***** -->
                     <li>
                         <hr class="dropdown-divider" />
@@ -76,7 +75,8 @@
                             </nav>
                         </div>
                         <a class="nav-link" href="note.html">
-                            <div class="sb-nav-link-icon"><i class="fa-regular fa-note-sticky" style="color: #769fcd;"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-regular fa-note-sticky"
+                                    style="color: #769fcd;"></i></div>
                             Notes
                         </a>
                     </div>
@@ -132,8 +132,8 @@
                                         <h2 class="mb-3">Edit Project</h2>
                                         <div class="form-group">
                                             <label for="editProjectName">Project Name:</label>
-                                            <input type="text" class="form-control" id="editProjectName" name="projectName"
-                                                required>
+                                            <input type="text" class="form-control" id="editProjectName"
+                                                name="projectName" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="editProjectDescription">Description:</label>
@@ -154,33 +154,36 @@
                                     <div>"Project Name"</div>
                                 </div>
                                 <div class="bg-danger rounded p-2 btn ">
-                                    <span class="text-light" id="removeProject_btn" > - RemoveProject</span>
-                                    </div>
+                                    <span class="text-light" id="removeProject_btn"> - RemoveProject</span>
+                                </div>
                             </div>
                             <div id="p_cards" class="card-body">
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header card-header d-flex justify-content-between">
-                                            <span>To Do</span>
-                                            <i onclick="onclick" class="fa-solid fa-plus btn" style="color: #769fcd;">
-                                                <div id="formModal" class="modal">
-                                                    <div class="modal-content">
-                                                        <span class="close" onclick="closeFormModal()">×</span>
-                                                        <form id="modalForm" class="modal-form" action="#" method="POST">
-                                                            <h2>add new project</h2>
-                                                            <label for="nameproject:">name project:</label><br>
-                                                            <input type="text" id="nameproject" name="projectName" required><br>
-                                                            <label id="projectinputLable" for="Description">Description</label><br>
-                                                            <input id="projectinput" type="text" id="Description" name="Description"
-                                                                required><br><br>
-                                                            <input id="send" type="submit" value="Submit">
-                                                        </form>
-                                                    </div>
+                                        <span>To Do</span>
+                                        <i onclick="onclick" class="fa-solid fa-plus btn" style="color: #769fcd;">
+                                            <div id="formModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close" onclick="closeFormModal()">×</span>
+                                                    <form id="modalForm" class="modal-form" action="#" method="POST">
+                                                        <h2>add new project</h2>
+                                                        <label for="nameproject:">name project:</label><br>
+                                                        <input type="text" id="nameproject" name="projectName"
+                                                            required><br>
+                                                        <label id="projectinputLable"
+                                                            for="Description">Description</label><br>
+                                                        <input id="projectinput" type="text" id="Description"
+                                                            name="Description" required><br><br>
+                                                        <input id="send" type="submit" value="Submit">
+                                                    </form>
                                                 </div>
-                                            </i>
+                                            </div>
+                                        </i>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <div class="taskItem ">
-                                            <li class="list-group-item card-header d-flex justify-content-between align-items-center">
+                                            <li
+                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
                                                 "Task 1"
                                                 <div>
                                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -215,10 +218,10 @@
                                 </div>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header d-flex justify-content-between">
-                                        
-                                            <span>In progress</span>
-                                            <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
-                                        
+
+                                        <span>In progress</span>
+                                        <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
+
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <div>
@@ -258,12 +261,12 @@
                                 </div>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header d-flex justify-content-between">
-                                            <div>
-                                                <span>Completed</span>
-                                            </div>
-                                            <div>
-                                                <i class="fa-solid fa-plus " style="color: #769fcd;"></i>
-                                            </div>
+                                        <div>
+                                            <span>Completed</span>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-plus " style="color: #769fcd;"></i>
+                                        </div>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <div>
@@ -290,14 +293,14 @@
                                         </div>
                                         <div>
                                             <li
-                                            class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                            "Task 1"
-                                            <div>
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                                <i class="fa-solid fa-trash"></i>
-                                            </div>
+                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
+                                                "Task 1"
+                                                <div>
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </div>
 
-                                        </li>
+                                            </li>
                                         </div>
                                     </ul>
                                 </div>
