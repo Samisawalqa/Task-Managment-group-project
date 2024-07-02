@@ -28,11 +28,12 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">User info.</a></li>
                     <!-- ***** Need to link to user page ***** -->
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="login_index.html">Logout</a></li>
+                    <li><a class="dropdown-item" href="#!">Logout</a></li>
                     <!-- ***** Need to link to logout page ***** -->
                 </ul>
             </li>
@@ -133,10 +134,10 @@
                                 </div>
                             </form>
                             <select id="sort-by">
-                                <option id="all" value="">All</option>
                                 <option id="to_do" value="status1">To Do</option>
                                 <option id="Inprogress" value="status2">Inprogress</option>
                                 <option id="Completed" value="status3">Completed</option>
+                                <option id="all" value="">All</option>
                                 <option id="Older_to_Newer" value="due-date">Older to Newer</option>
                                 <option id="Newer_to_older" value="due-date">Newer to older</option>
                             </select>
@@ -238,7 +239,6 @@
         </div>
     </div>
 
-
     <script>
 
         const sort_by_select = document.getElementById('sort-by')
@@ -252,44 +252,42 @@
         let taskDueDate = taskDate.getDay() + '/' + taskDate.getMonth() + '/' + taskDate.getFullYear()
 
         let users = [{
-            email: 'abdallah.awaysheh@taskbuddy.com', password: '123', name: 'AbdallahAwaysheh', userData: [
+            email: 'abdallah.awaysheh@taskbuddy.com',
+            password: '123',
+            name: 'AbdallahAwaysheh',
+            userData: [
                 {
-                    projectName: 'project1', projectDescription: 'description',
+                    projectName: 'project1',
+                    projectDescription: 'description',
                     tasks: [
-                        { taskName: 'task1', status: 'To Do', dueDate: new Date(1111111111111), taskDescription: 'description' },
-                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date(1211111111111), taskDescription: 'description' }]
+                        { taskName: 'task1', status: 'To Do', dueDate: new Date('2024-07-15'), taskDescription: 'description' },
+                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-10'), taskDescription: 'description' },
+                        { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-20'), taskDescription: 'description' },
+                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-05'), taskDescription: 'description' }
+                    ]
                 },
                 {
-                    projectName: 'project2', projectDescription: 'description', tasks: [
-                        { taskName: 'task1', status: 'Completed', dueDate: new Date(1311111111111), taskDescription: 'description' },
-                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date(1411111111111), taskDescription: 'description' }]
+                    projectName: 'project2',
+                    projectDescription: 'description',
+                    tasks: [
+                        { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-25'), taskDescription: 'description' },
+                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-12'), taskDescription: 'description' },
+                        { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-18'), taskDescription: 'description' },
+                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-08'), taskDescription: 'description' }
+                    ]
                 },
                 {
-                    projectName: 'project3', projectDescription: 'description', tasks: [
-                        { taskName: 'task1', status: 'Completed', dueDate: new Date(1151111111111), taskDescription: 'description' },
-                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date(1611111111111), taskDescription: 'description' },
-                        { taskName: 'task5', status: 'Completed', dueDate: new Date(1171123111111), taskDescription: 'description' }]
+                    projectName: 'project3',
+                    projectDescription: 'description',
+                    tasks: [
+                        { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-30'), taskDescription: 'description' },
+                        { taskName: 'task2', status: 'To Do', dueDate: new Date('2024-07-17'), taskDescription: 'description' },
+                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-22'), taskDescription: 'description' },
+                        { taskName: 'task5', status: 'Completed', dueDate: new Date('2024-07-28'), taskDescription: 'description' }
+                    ]
                 }
             ]
         }];
-
-        function extractTaskInfo(users) {
-            const taskInfoArray = [];
-            users.forEach(user => {
-                user.userData.forEach(project => {
-                    project.tasks.forEach(task => {
-                        taskInfoArray.push({
-                            projectName: project.projectName,
-                            taskName: task.taskName,
-                            dueDate: task.dueDate,
-                            status: task.status
-                        });
-                    });
-                });
-            });
-            return taskInfoArray;
-        };
-
         localStorage.setItem('users', JSON.stringify(users));
 
         const tableDiv = document.querySelector('.table-bordered thead')
@@ -421,68 +419,22 @@
                 })
 
             } else if (status_id === 'Older_to_Newer') {
-                document.querySelector('tbody').innerHTML = ''
-
-
-                const taskInfoArray = extractTaskInfo(users).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-                console.log(taskInfoArray);
-
-                function Older_to_Newer_Function(users) {
-                    users.forEach(user => {
-                        let statusArray = ['Completed', 'To Do', 'Inprogress']
-                        let activeStatus = statusArray.indexOf(user.status)
-                        listElement.innerHTML += `<tr>
-                        <td>${user.projectName}</td>
-                        <td>${user.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${user.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
-                    })
-                    tableDiv.after(listElement)
-                }
-                Older_to_Newer_Function(taskInfoArray)
-
-            } else if (status_id === 'Newer_to_older') {
-                document.querySelector('tbody').innerHTML = ''
-
-
-                const taskInfoArray = extractTaskInfo(users).sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
-                console.log(taskInfoArray);
-
-                function Newer_to_Older_Function(users) {
-                    users.forEach(user => {
-                        let statusArray = ['Completed', 'To Do', 'Inprogress']
-                        let activeStatus = statusArray.indexOf(user.status)
-                        listElement.innerHTML += `<tr>
-                        <td>${user.projectName}</td>
-                        <td>${user.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${user.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
-                    })
-                    tableDiv.after(listElement)
-                }
-                Newer_to_Older_Function(taskInfoArray)
-
+                sortTasksByDate(users);
             }
-        })
-
-        //////
-
+        }
+        )
+        function sortTasksByDate(users) {
+            // Iterate through each user
+            users.forEach(user => {
+                // Iterate through each project in userData
+                user.userData.forEach(project => {
+                    // Sort tasks array by dueDate
+                    project.tasks.sort((a, b) => a.dueDate - b.dueDate);
+                });
+            });
+            console.log(users)
+        }
+        sortTasksByDate(users);
 
     </script>
 
