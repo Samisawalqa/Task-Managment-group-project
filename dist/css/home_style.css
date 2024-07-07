@@ -1,8 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+html{
+    scrollbar-width: thin; 
+    scrollbar-color:  #587FB2 #769fcd25; 
+    border-radius: 8px;
+}
+
+
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family:Nunito;
 }
 body {
     overflow-x: hidden;
@@ -10,6 +20,7 @@ body {
     
 }
 .sticky {
+    border: none;
     position: fixed;
     top: 0;
     width: 100%;
@@ -23,7 +34,8 @@ nav {
     padding: 10px 0;
     font-size: 25px;
     border-bottom: 1px solid;
-    background-color: #f7fbfcf3;
+    background-color: rgba(247, 251, 252, 0.652); 
+    backdrop-filter: blur(8px); 
 }
 .navsign {
     margin-top: 10px;
@@ -33,22 +45,28 @@ nav {
     gap: 30px;
     margin-right: 30px;
 }
+
+a {
+    text-decoration: none;
+    color: #587FB2;
+    padding: 3px;
+    font-family: Nunito;
+}
+
 .navsign a:hover {
     color: #769FCD;
 }
+
 .logo {
     display: flex;
     align-items: center;
     margin-left: 30px;
 }
 .logo img {
-    width: 90px;
+    width: 60px;
     margin-right: 20px;
-}
-a {
-    text-decoration: none;
-    color: black;
-    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 #theimg1 img {
     width: 900px;
@@ -82,19 +100,19 @@ a {
 }
 button {
     border: none;
-    background-color: #769FCD;
+    background-color:#587FB2;
     padding: 15px 17px;
     font-size: 20px;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
     height: 60px;
-    width: 150px;
+    width: 200px;
     transition: background-color 0.3s ease;
     margin-top: 20px;
 }
 button:hover {
-    background-color: #577c9e;
+    background-color: #769FCD;
 }
 section {
     margin: 60px;
@@ -125,40 +143,60 @@ section {
 
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Nunito;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
+
+
+b{
+    color: #769FCD;
+}
+
+
+
+
+
 .container {
-    max-width: 800px;
+    max-width: 90%;
     margin: 50px auto;
     padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
+
 .card {
     background-color: #fff;
-    margin-bottom: 20px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex: 1 1 calc(33.333% - 20px);
+    box-sizing: border-box;
 }
+
 .card h2 {
     color: #769FCD;
     margin-bottom: 10px;
 }
+
 .card p, .card ul {
     color: #000;
     line-height: 1.6;
 }
+
 .card ul {
     list-style: none;
     padding: 0;
 }
+
 .card ul li {
     color: #000;
     margin-bottom: 10px;
     padding-left: 15px;
     position: relative;
 }
+
 .card ul li:before {
     content: '';
     position: absolute;
@@ -169,6 +207,10 @@ body {
     background-color: #769FCD;
     border-radius: 50%;
 }
+
+
+
+
 
 
 .sec3 p {
@@ -211,7 +253,7 @@ body {
     height: 100px;
 }
 #contact-form button {
-    width: auto;
+    width: 100%;
     align-self: flex-start;
 }
 
@@ -230,6 +272,10 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+}
+
+#Quick{
+    font-size: large;
 }
 .footer-section {
     flex: 1;
@@ -266,6 +312,7 @@ footer {
 /* Responsive Styles */
 @media (max-width: 768px) {
     
+
     nav {
         font-size: 12px;
     }
@@ -276,13 +323,19 @@ footer {
         margin-right: 19px;
     }
     .logo img {
-        width: 60px;
-        margin-right: 10px;
+        width: 30px;
+        margin-left: -18px;
     }
     #theimg1 img {
         width: 100%;
         margin: 10px auto;
     }
+
+
+    button{
+        width: 150px;
+    }
+
     .main {
         flex-direction: column;
         margin: 20px;
@@ -294,7 +347,7 @@ footer {
         text-align: center;
     }
     .main .info h1 {
-        font-size: 36px;
+        font-size: 33px;
     }
     .main .info h2 {
         font-size: 24px;
@@ -314,6 +367,10 @@ footer {
         margin-bottom: -10px;
     }
     
+
+    .card {
+        flex: 1 1 100%;
+    }
 
     section {
         margin: 20px;
