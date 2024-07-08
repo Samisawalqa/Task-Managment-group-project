@@ -1,41 +1,36 @@
-//
-
-// البدء بجزء تحميل الصفحة وتعريف ال Sections 
-
 document.addEventListener('DOMContentLoaded', (event) => {
     const signupForm = document.getElementById('signupForm');
     const signinForm = document.getElementById('signinForm');
-// ***************************************************************************************
 
+    // دالة لعرض الـSweetAlert
+    function showAlert(message, type = 'info') {
+        Swal.fire({
+            text: message,
+            icon: type
+        });
+    }
 
-
-// بدء sign up form
+    // إضافة event listener لنموذج sign up
     if (signupForm) {
         signupForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            // تعريف محتويات ادخال المعلومات الشخصية
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            // *****************************************************************************
 
-
-            // Alert يظهر عند ادخال المعلومات وال
-
-            if (firstName && lastName && email && password) {
-                alert('Sign Up successful!');
+            // شرط للتحقق من صحة كلمة المرور
+            const passwordPattern = /^(?=.[a-z])(?=.[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+            if (firstName && lastName && email && passwordPattern.test(password)) {
+                showAlert('Sign Up successful!', 'success');
                 document.getElementById('signup-container').classList.add('hidden');
                 document.getElementById('signin-container').classList.remove('hidden');
             } else {
-                alert('Please fill out all fields.');
+                showAlert('Please fill out all fields correctly.\nPassword must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.', 'error');
             }
         });
-            // *******************************************************************************
 
-
-        // عند النقر على الارسال يتم اخفاء نموذج ال sign up  واظهار نموذج ال sign in 
-
+        // إظهار نموذج sign in عند النقر على الرابط
         const signinLink = document.getElementById('signinLink');
         signinLink.addEventListener('click', function(event) {
             event.preventDefault();
@@ -43,30 +38,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('signin-container').classList.remove('hidden');
         });
     }
-        // *************************************************************************************
 
-
-
-        
-        // بدء sign in form 
-
+    // إضافة event listener لنموذج sign in
     if (signinForm) {
         signinForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const email = document.getElementById('signinEmail').value;
             const password = document.getElementById('signinPassword').value;
 
-
-            // Alert عند اكتمال تسجيل الدخول 
             if (email && password) {
-               
-
-
+                // هنا يمكنك إضافة تعليمات للتحقق من تسجيل الدخول
             } else {
-                alert('Please fill out all fields.');
+                showAlert('Please fill out all fields.', 'error');
             }
         });
 
+        // إظهار نموذج sign up عند النقر على الرابط
         const signupLink = document.getElementById('signupLink');
         signupLink.addEventListener('click', function(event) {
             event.preventDefault();
@@ -75,5 +62,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 });
-
-

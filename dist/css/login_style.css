@@ -36,10 +36,10 @@ body {
 }
 
 .image-container .logo {
-    width: 250px;
-    margin-top: -45px;
-    margin-bottom: -80px;
-    margin-left: -175px;
+    width: 212px;
+    /* margin-top: -45px; */
+    margin-bottom: -50px;
+    margin-left: -92px;
 }
 
 .image-container .background-image {
@@ -83,7 +83,6 @@ p {
 }
 
 button {
-    border-radius: 20px;
     border: 1px solid rgb(118, 159, 205);
     background-color:rgb(118, 159, 205);
     color: #FFFFFF;
@@ -96,8 +95,9 @@ button {
 }
 
 button:hover {
-    transform: scale(1.1);
-    transition: all 0.7s ease;
+    /* transform: scale(1.1);
+    transition: all 0.7s ease; */
+    background-color:rgb(106, 143, 184) ;
 }
 
 button:active {
@@ -127,7 +127,7 @@ form input {
 }
 
 
-@media (max-width: 430px) {
+@media (max-width: 764px) {
     .container {
         flex-direction: column;
         width: 90%;
