@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+
+
+
+
+
 body {
     font-family: 'Montserrat', sans-serif;
     background: #f6f5f7;
@@ -41,7 +46,6 @@ body {
     margin-bottom: -50px;
     margin-left: -92px;
 }
-
 .image-container .background-image {
     width: 100%;
     height: 100%;
