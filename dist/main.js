@@ -1,320 +1,354 @@
+document.addEventListener('DOMContentLoaded', () => {
+    displayProjects();
+    displayToDoTasks();
+});
 
-let show = document.getElementById("to_add_proj");
+// Retrieve users from local storage and get the active user
+const users = JSON.parse(localStorage.getItem('users'));
+// let projectCounter = 0;
+// let taskCounter = 0;
+if (users) {
+    var activeUser = users.find(user => user.activeStatus === true);
+} else {
+    alert('There are no users in local storage');
+}
 
-        // Object to hold form URLs for different projects - Popup
-        var projectForms = {
-            'first project': 'forms/first-project-form.html',
-            'second project': 'forms/second-project-form.html',
-            'add task': 'forms/add-task-form.html' // Example for Add Task button
+// Function to open and close modals
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+let closer = document.getElementById('close');
+if (closer != null) {
+    closer.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal('formModal');
+        displayProjects();
+        displayToDoTasks();
+    });
+}
+// Add new project
+let send = document.getElementById('send');
+if (send != null) {
+    send.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const projectName = document.getElementById('nameproject').value;
+        const projectDescription = document.getElementById('projectinput').value;
+
+        if (!activeUser) {
+            alert("No user is signed in.");
+            return;
+        }
+
+        if (!activeUser.projects) {
+            activeUser.projects = [];
+        }
+
+        const project = {
+            projectName: projectName,
+            projectDescription: projectDescription,
+            categories: {
+                toDo: [],
+                inProgress: [],
+                complete: []
+            }
         };
 
+        activeUser.projects.push(project);
+        localStorage.setItem("users", JSON.stringify(users));
+        // projectCounter++;
+        displayProjects();
+        displayToDoTasks();
+        closeModal('formModal');
+    });
 
-        function openFormModal(content) {
-            let modal = document.getElementById('formModal');
-            let modalForm = modal.querySelector('.modal-form');
-            modalForm.action = projectForms[content.toLowerCase()];
-            modal.style.display = 'block';
-        }
+}
 
+// Display projects
+function displayProjects() {
+    const projectContainer = document.getElementById('to_add_proj');
+    if (projectContainer != null) {
+        projectContainer.innerHTML = '';
+    }
 
-        function closeFormModal() {
-            const popups =document.querySelectorAll('.modal');
-            popups.forEach((ele)=>{
-                ele.style.display='none';
-            })
-        }
-
-        // Add Button
-        window.onclick = function(event) {
-            let modal = document.getElementById('formModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+    if (activeUser && activeUser.projects) {
+        activeUser.projects.forEach((project, index) => {
+            // Ensure categories are initialized
+            if (!project.categories) {
+                project.categories = {
+                    toDo: [],
+                    inProgress: [],
+                    complete: []
+                };
             }
-        }
-        document.getElementById('send').addEventListener('click', (e) => {
-            e.preventDefault();
-        
-            const projectName = document.getElementById('nameproject').value;
-            const projectDescription = document.getElementById('projectinput').value;
-        
-            const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-            if (!signedInUser) {
-                alert("No user is signed in.");
-                return;
-            }
-        
-            if (!signedInUser.projects) {
-                signedInUser.projects = [];
-            }
-        
-            const project = {
-                projectName: projectName,
-                projectDescription: projectDescription
-            };
-        
-            signedInUser.projects.push(project);
-            localStorage.setItem("signedInUser", JSON.stringify(signedInUser));
-        
-            displayProjects();
-            
 
-        });
-        
-        document.getElementById('editSend').addEventListener('click', (e) => {
-            e.preventDefault();
-        
-            const projectName = document.getElementById('editProjectName').value;
-            const projectDescription = document.getElementById('editProjectDescription').value;
-            const projectIndex = document.getElementById('editSend').getAttribute('data-index');
-        
-            const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-            if (!signedInUser) {
-                alert("No user is signed in.");
-                return;
-            }
-        
-            signedInUser.projects[projectIndex] = {
-                projectName: projectName,
-                projectDescription: projectDescription
-            };
-        
-            localStorage.setItem("signedInUser", JSON.stringify(signedInUser));
-        
-            displayProjects();
-            closeEditFormModal();
-        });
-        
-        function displayProjects() {
-            const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-            const projectContainer = document.getElementById('to_add_proj');
-            projectContainer.innerHTML = '';
-        
-            if (signedInUser && signedInUser.projects) {
-                signedInUser.projects.forEach((project, index) => {
-                    const projectHTML = `
-                        <div class="card mb-3">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-table me-1"></i>
-                                    <div>${project.projectName}</div>
-                                </div>
-                                <div class="bg-danger rounded p-2 btn" onclick="removeProject(${index})">
-                                    <span class="text-light"> - Remove Project</span>
-                                </div>
+            const projectHTML = `
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-table me-1"></i>
+                            <div>${project.projectName}</div>
+                        </div>
+                        <div>
+                            <div class="bg-danger btn btn-sm" onclick="removeProject(${index})">
+                                <span class="text-light"> - Remove Project</span>
                             </div>
-                            <div class="card-body">
-                                <p>${project.projectDescription}</p>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-info" onclick="openEditFormModal(${index})">Edit</button>
-                                </div>
-                            </div>  
-                            <div id="p_cards" class="card-body">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-header card-header d-flex justify-content-between">
-                                        <span>To Do</span>
-                                        <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <div class="taskItem ">
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-header d-flex justify-content-between">
-
-                                        <span>In progress</span>
-                                        <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
-
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-header d-flex justify-content-between">
-                                        <div>
-                                            <span>Completed</span>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-plus " style="color: #769fcd;"></i>
-                                        </div>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                            </div> 
-                        </div>  
-                        
-
-                    `;
-                    projectContainer.innerHTML += projectHTML;
-                });
+                            <button class="btn btn-info btn-sm" onclick="openEditFormModal(${index})">Edit</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>${project.projectDescription}</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-sm btn-primary" onclick="opentaskFormModal(${index}, 'toDo')">Add Task</button>
+                        </div>
+                        ${tasksHTML(project, index)}
+                    </div>
+                </div>
+            `;
+            if (projectContainer != null) {
+                projectContainer.innerHTML += projectHTML;
             }
-        }
-        
-        function removeProject(index) {
-            const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-            if (signedInUser && signedInUser.projects) {
-                signedInUser.projects.splice(index, 1);
-                localStorage.setItem('signedInUser', JSON.stringify(signedInUser));
-                displayProjects();
-            }
-        }
-        
-        function openEditFormModal(index) {
-            const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-            if (signedInUser && signedInUser.projects) {
-                const project = signedInUser.projects[index];
-                document.getElementById('editProjectName').value = project.projectName;
-                document.getElementById('editProjectDescription').value = project.projectDescription;
-                document.getElementById('editSend').setAttribute('data-index', index);
-            }
-        
-            var modal = document.getElementById('editFormModal');
-            modal.style.display = 'block';
-        }
-        
-        function closeFormModal() {
-            var modal = document.getElementById('formModal');
-            modal.style.display = 'none';
-        }
-        
-        function closeEditFormModal() {
-            var modal = document.getElementById('editFormModal');
-            modal.style.display = 'none';
-        }
-        
-        document.addEventListener('DOMContentLoaded', displayProjects);
-        function addTask(projectIndex, category) {
-    const taskName = prompt(`Enter task name for ${category}:`);
-    if (!taskName) return; // If user cancels or provides empty task name
-    
-    const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-    const taskList = signedInUser.projects[projectIndex].tasks[category];
-    taskList.push(taskName);
-    
-    localStorage.setItem('signedInUser', JSON.stringify(signedInUser));
-    displayProjects(); // Refresh project display
+        });
+    }
 }
 
-function editTask(projectIndex, category, taskIndex) {
-    const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-    const currentTaskName = signedInUser.projects[projectIndex].tasks[category][taskIndex];
-    const newTaskName = prompt(`Enter new task name for ${category}:`, currentTaskName);
-    
-    if (!newTaskName) return; // If user cancels or provides empty task name
-    
-    signedInUser.projects[projectIndex].tasks[category][taskIndex] = newTaskName;
-    localStorage.setItem('signedInUser', JSON.stringify(signedInUser));
-    displayProjects(); // Refresh project display
+function tasksHTML(project, projectIndex) {
+    return `
+        <div id="p_cards" class="card-body">
+            ${taskCategoryHTML('To Do', project.categories.toDo, projectIndex, 'toDo', 'bg-primary')}
+            ${taskCategoryHTML('In Progress', project.categories.inProgress, projectIndex, 'inProgress', 'bg-warning')}
+            ${taskCategoryHTML('Completed', project.categories.complete, projectIndex, 'complete', 'bg-success')}
+        </div>
+    `;
 }
 
-function deleteTask(projectIndex, category, taskIndex) {
-    const confirmed = confirm(`Are you sure you want to delete this task?`);
-    if (!confirmed) return;
-    
-    const signedInUser = JSON.parse(localStorage.getItem('signedInUser'));
-    signedInUser.projects[projectIndex].tasks[category].splice(taskIndex, 1);
-    localStorage.setItem('signedInUser', JSON.stringify(signedInUser));
-    displayProjects(); // Refresh project display
+function taskCategoryHTML(categoryName, tasks, projectIndex, category, bgColorClass) {
+    return `
+        <div class="card" style="width: 18rem;">
+            <div class="card-header d-flex justify-content-between">
+                <span>${categoryName}</span>
+                <i class="fa-solid fa-plus" style="color: #769fcd;" onclick="opentaskFormModal(${projectIndex}, '${category}')"></i>
+            </div>
+            <ul id="${category}Tasks${projectIndex}" class="list-group list-group-flush" ondrop="drop(event, '${category}', ${projectIndex})" ondragover="allowDrop(event)">
+                ${tasks.map((task, taskIndex) => `
+                    <div class="taskItem" draggable="true" ondragstart="drag(event, ${projectIndex}, '${category}', ${taskIndex})">
+                        <li class="list-group-item card-header d-flex justify-content-between align-items-center ${bgColorClass} text-white">
+                            ${task}
+                            <div>
+                                <i class="fa-solid fa-pen-to-square" onclick="openEditTaskFormModal(${projectIndex}, '${category}', ${taskIndex})"></i>
+                                <i class="fa-solid fa-trash" onclick="removeTask(${projectIndex}, '${category}', ${taskIndex})"></i>
+                            </div>
+                        </li>
+                    </div>
+                `).join('')}
+                <li class="list-group-item dropzone ${bgColorClass} text-white" ondrop="drop(event, '${category}', ${projectIndex})" ondragover="allowDrop(event)" style="min-height: 50px;"></li>
+            </ul>
+        </div>
+    `;
+}
+let editSend = document.getElementById('editSend');
+if (editSend != null) {
+    editSend.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const projectName = document.getElementById('editProjectName').value;
+        const projectDescription = document.getElementById('editProjectDescription').value;
+        const projectIndex = document.getElementById('editSend').getAttribute('data-index');
+
+        if (!activeUser) {
+            alert("No user is signed in.");
+            return;
+        }
+
+        activeUser.projects[projectIndex] = {
+            ...activeUser.projects[projectIndex],
+            projectName: projectName,
+            projectDescription: projectDescription
+        };
+
+        localStorage.setItem('users', JSON.stringify(users));
+
+        displayProjects();
+        displayToDoTasks();
+        closeModal('editFormModal');
+    });
+
+}
+let addTaskButton = document.getElementById('addTaskButton');
+if (addTaskButton != null) {
+    addTaskButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const taskName = document.getElementById('taskName').value;
+        const projectIndex = document.getElementById('addTaskButton').getAttribute('data-project-index');
+        const category = document.getElementById('addTaskButton').getAttribute('data-category');
+
+        if (!activeUser || !activeUser.projects || !activeUser.projects[projectIndex]) {
+            alert("No user or projects found.");
+            return;
+        }
+
+        const project = activeUser.projects[projectIndex];
+        project.categories[category].push(taskName);
+        // taskCounter++;
+        localStorage.setItem('users', JSON.stringify(users));
+        displayProjects();
+        displayToDoTasks();
+        closeModal('taskFormModal');
+    });
+
+}
+// remove project
+function removeProject(index) {
+    if (activeUser && activeUser.projects) {
+        activeUser.projects.splice(index, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        // projectCounter--;
+        displayProjects();
+        displayToDoTasks();
+    }
 }
 
-// Display projects function remains the same as previously defined
+function openEditFormModal(index) {
+    if (activeUser && activeUser.projects) {
+        const project = activeUser.projects[index];
+        document.getElementById('editProjectName').value = project.projectName;
+        document.getElementById('editProjectDescription').value = project.projectDescription;
+        document.getElementById('editSend').setAttribute('data-index', index);
+    }
+    openModal('editFormModal');
+}
 
-document.addEventListener('DOMContentLoaded', displayProjects);
+function opentaskFormModal(projectIndex, category) {
+    document.getElementById('addTaskButton').setAttribute('data-project-index', projectIndex);
+    document.getElementById('addTaskButton').setAttribute('data-category', category);
+    openModal('taskFormModal');
+}
+
+function openEditTaskFormModal(projectIndex, category, taskIndex) {
+    document.getElementById('editTaskButton').setAttribute('data-project-index', projectIndex);
+    document.getElementById('editTaskButton').setAttribute('data-category', category);
+    document.getElementById('editTaskButton').setAttribute('data-task-index', taskIndex);
+    const taskName = activeUser.projects[projectIndex].categories[category][taskIndex];
+    document.getElementById('editTaskName').value = taskName;
+    openModal('editTaskFormModal');
+}
+let editTaskButton = document.getElementById('editTaskButton');
+if (editTaskButton != null) {
+    editTaskButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const taskName = document.getElementById('editTaskName').value;
+        const projectIndex = document.getElementById('editTaskButton').getAttribute('data-project-index');
+        const category = document.getElementById('editTaskButton').getAttribute('data-category');
+        const taskIndex = document.getElementById('editTaskButton').getAttribute('data-task-index');
+
+        if (!activeUser || !activeUser.projects || !activeUser.projects[projectIndex]) {
+            alert("No user or projects found.");
+            return;
+        }
+
+        activeUser.projects[projectIndex].categories[category][taskIndex] = taskName;
+        localStorage.setItem('users', JSON.stringify(users));
+        displayProjects();
+        displayToDoTasks();
+        closeModal('editTaskFormModal');
+    });
+
+}
+
+function displayToDoTasks() {
+    if (activeUser && activeUser.projects) {
+        activeUser.projects.forEach((project, index) => {
+            // Ensure categories are initialized
+            if (!project.categories) {
+                project.categories = {
+                    toDo: [],
+                    inProgress: [],
+                    complete: []
+                };
+            }
+            updateTaskList('toDo', project.categories.toDo, index, 'bg-primary');
+            updateTaskList('inProgress', project.categories.inProgress, index, 'bg-warning');
+            updateTaskList('complete', project.categories.complete, index, 'bg-success');
+        });
+    }
+}
+
+function updateTaskList(category, tasks, projectIndex, bgColorClass) {
+
+    const tasksContainer = document.getElementById(`${category}Tasks${projectIndex}`);
+    if (tasksContainer != null) {
+
+        tasksContainer.innerHTML = tasks.map((task, taskIndex) => `
+            <div class="taskItem" draggable="true" ondragstart="drag(event, ${projectIndex}, '${category}', ${taskIndex})">
+                <li class="list-group-item card-header d-flex justify-content-between align-items-center ${bgColorClass} text-white">
+                    ${task}
+                    <div>
+                        <i class="fa-solid fa-pen-to-square" onclick="openEditTaskFormModal(${projectIndex}, '${category}', ${taskIndex})"></i>
+                        <i class="fa-solid fa-trash" onclick="removeTask(${projectIndex}, '${category}', ${taskIndex})"></i>
+                    </div>
+                </li>
+            </div>
+        `).join('') + `<li class="list-group-item dropzone ${bgColorClass} text-white" ondrop="drop(event, '${category}', ${projectIndex})" ondragover="allowDrop(event)" style="min-height: 50px;"></li>`;
+    }
+}
+
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+function drag(event, projectIndex, category, taskIndex) {
+    event.dataTransfer.setData("text/plain", JSON.stringify({ projectIndex, category, taskIndex, taskName: activeUser.projects[projectIndex].categories[category][taskIndex] }));
+}
+
+function drop(event, targetCategory, projectIndex) {
+    event.preventDefault();
+    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+    const { projectIndex: sourceProjectIndex, category: sourceCategory, taskIndex, taskName } = data;
+
+    // Ensure the task is valid before proceeding
+    if (
+        activeUser.projects[sourceProjectIndex] &&
+        activeUser.projects[sourceProjectIndex].categories[sourceCategory] &&
+        activeUser.projects[sourceProjectIndex].categories[sourceCategory][taskIndex] === taskName
+    ) {
+        // Remove task from source category
+        activeUser.projects[sourceProjectIndex].categories[sourceCategory].splice(taskIndex, 1);
+
+        // Add task to target category
+        activeUser.projects[projectIndex].categories[targetCategory].push(taskName);
+
+        localStorage.setItem('users', JSON.stringify(users));
+        displayProjects();
+        displayToDoTasks();
+    }
+}
+
+function removeTask(projectIndex, category, taskIndex) {
+    const project = activeUser.projects[projectIndex];
+    project.categories[category].splice(taskIndex, 1);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    displayProjects();
+    displayToDoTasks();
+}
+
+function closeEditFormModal() {
+    closeModal('editFormModal');
+}
+
+function closeFormModal() {
+    closeModal('formModal');
+}
+
+function closetaskFormModal() {
+    closeModal('taskFormModal');
+}
+
+

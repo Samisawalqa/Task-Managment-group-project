@@ -15,30 +15,30 @@
 
 <body class="sb-nav-fixed">
     <!-- Top navbar -->
-    <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex justify-content-between">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
         <!-- ***** Need to link to home page ***** -->
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar => User -->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">User info.</a></li>
-                    <!-- ***** Need to link to user page ***** -->
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
-                    <!-- ***** Need to link to logout page ***** -->
-                </ul>
-            </li>
+        <div class="d-flex ">
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                    class="fas fa-bars"></i></button>
+            <!-- Navbar => User -->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li><a class="dropdown-item" href="../index.html">Logout</a></li>
+                        <!-- ***** Need to link to logout page ***** -->
+                    </ul>
+                </li>
 
-        </ul>
+            </ul>
+        </div>
     </nav>
     <!-- Full Body -->
     <div id="layoutSidenav">
@@ -92,28 +92,28 @@
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-primary text-white mb-4">
                                 <div class="card-body"><i class="fa-solid fa-list-check"></i> All Tasks
-                                    <div>40 Tasks</div>
+                                    <div id="allTasks">0</div>Tasks
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-warning text-white mb-4">
                                 <div class="card-body"><i class="fa-solid fa-list-check"></i>To Do Tasks
-                                    <div>30 Tasks</div>
+                                    <div id="toDoTasks">0 </div>Tasks
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-success text-white mb-4">
                                 <div class="card-body"><i class="fa-solid fa-list-check"></i>In progress Tasks
-                                    <div>20 Tasks</div>
+                                    <div id="inProgressTasks">0 </div>Tasks
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-danger text-white mb-4">
                                 <div class="card-body"><i class="fa-solid fa-list-check"></i>Completed Tasks
-                                    <div>10 Tasks</div>
+                                    <div id="completedTasks">0</div>Tasks
                                 </div>
                             </div>
                         </div>
@@ -238,9 +238,10 @@
             </footer>
         </div>
     </div>
-
+    <script src="main.js"></script>
     <script>
 
+        // const users = JSON.parse(localStorage.getItem('users'));
         const sort_by_select = document.getElementById('sort-by')
         const all_option = document.getElementById('all')
         const Inprogress_option = document.getElementById('Inprogress')
@@ -249,80 +250,108 @@
         const Newer_to_older_option = document.getElementById('Newer_to_older')
 
         let taskDate = new Date()
-        let taskDueDate = taskDate.getDay() + '/' + taskDate.getMonth() + '/' + taskDate.getFullYear()
 
-        let users = [{
-            email: 'abdallah.awaysheh@taskbuddy.com',
-            password: '123',
-            name: 'AbdallahAwaysheh',
-            userData: [
-                {
-                    projectName: 'project1',
-                    projectDescription: 'description',
-                    tasks: [
-                        { taskName: 'task1', status: 'To Do', dueDate: new Date('2024-07-15'), taskDescription: 'description' },
-                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-10'), taskDescription: 'description' },
-                        { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-20'), taskDescription: 'description' },
-                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-05'), taskDescription: 'description' }
-                    ]
-                },
-                {
-                    projectName: 'project2',
-                    projectDescription: 'description',
-                    tasks: [
-                        { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-25'), taskDescription: 'description' },
-                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-12'), taskDescription: 'description' },
-                        { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-18'), taskDescription: 'description' },
-                        { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-08'), taskDescription: 'description' }
-                    ]
-                },
-                {
-                    projectName: 'project3',
-                    projectDescription: 'description',
-                    tasks: [
-                        { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-30'), taskDescription: 'description' },
-                        { taskName: 'task2', status: 'To Do', dueDate: new Date('2024-07-17'), taskDescription: 'description' },
-                        { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-22'), taskDescription: 'description' },
-                        { taskName: 'task5', status: 'Completed', dueDate: new Date('2024-07-28'), taskDescription: 'description' }
-                    ]
-                }
-            ]
-        }];
-        localStorage.setItem('users', JSON.stringify(users));
+        // let users = [{
+        //     email: 'abdallah.awaysheh@taskbuddy.com',
+        //     password: '123',
+        //     name: 'AbdallahAwaysheh',
+        //     userData: [
+        //         {
+        //             projectName: 'project1',
+        //             projectDescription: 'description',
+        //             tasks: [
+        //                 { taskName: 'task1', status: 'To Do', dueDate: new Date('2024-07-15'), taskDescription: 'description' },
+        //                 { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-10'), taskDescription: 'description' },
+        //                 { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-20'), taskDescription: 'description' },
+        //                 { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-05'), taskDescription: 'description' }
+        //             ]
+        //         },
+        //         {
+        //             projectName: 'project2',
+        //             projectDescription: 'description',
+        //             tasks: [
+        //                 { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-25'), taskDescription: 'description' },
+        //                 { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-12'), taskDescription: 'description' },
+        //                 { taskName: 'task4', status: 'Inprogress', dueDate: new Date('2024-07-18'), taskDescription: 'description' },
+        //                 { taskName: 'yasmeen', status: 'Completed', dueDate: new Date('2024-07-08'), taskDescription: 'description' }
+        //             ]
+        //         },
+        //         {
+        //             projectName: 'project3',
+        //             projectDescription: 'description',
+        //             tasks: [
+        //                 { taskName: 'task1', status: 'Completed', dueDate: new Date('2024-07-30'), taskDescription: 'description' },
+        //                 { taskName: 'task2', status: 'To Do', dueDate: new Date('2024-07-17'), taskDescription: 'description' },
+        //                 { taskName: 'task1', status: 'Inprogress', dueDate: new Date('2024-07-22'), taskDescription: 'description' },
+        //                 { taskName: 'task5', status: 'Completed', dueDate: new Date('2024-07-28'), taskDescription: 'description' }
+        //             ]
+        //         }
+        //     ]
+        // }];
+        // localStorage.setItem('users', JSON.stringify(users));
 
         const tableDiv = document.querySelector('.table-bordered thead')
         const userProjects = JSON.parse(localStorage.getItem('users'));
-
-        const task_foreach_method = function () {
-
-        }
-
+        let allTasksCounter = 0;
+        let inProgressTasksCounter = 0;
+        let completedTasksCounter = 0;
+        let toDoTasksCounter = 0;
         const listElement = document.createElement('tbody')
         function dashBoardProjectList(users) {
             users.forEach(user => {
-                user.userData.forEach(project => {
-                    project.tasks.forEach(task => {
-                        let statusArray = ['Completed', 'To Do', 'Inprogress']
-                        let activeStatus = statusArray.indexOf(task.status)
-                        listElement.innerHTML += `<tr>
-                        <td>${project.projectName}</td>
-                        <td>${task.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${task.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
+                if (user.activeStatus == true) {
+                    user.projects.forEach(project => {
+                        project.categories['toDo'].forEach(task => {
+
+                            listElement.innerHTML += `<tr>
+                                    <td>${project.projectName}</td>
+                                    <td class="tItem">${task}</td>
+                                    <td>To Do</td>
+                                    <td>21/12/2000</td>
+                                    <td><a id="linkHistory" href="#">>></a></td>
+                                    </tr>`;
+                            allTasksCounter++;
+                            toDoTasksCounter++;
+
+                        });
+                        project.categories['inProgress'].forEach(task => {
+
+                            listElement.innerHTML += `<tr>
+                                    <td>${project.projectName}</td>
+                                    <td class="tItem">${task}</td>
+                                    <td>In progress</td>
+                                    <td>21/12/2000</td>
+                                    <td><a id="linkHistory" href="#">>></a></td>
+                                    </tr>`;
+                            allTasksCounter++;
+                            inProgressTasksCounter++;
+
+                        });
+                        project.categories['complete'].forEach(task => {
+
+                            listElement.innerHTML += `<tr>
+                                    <td>${project.projectName}</td>
+                                    <td class="tItem">${task}</td>
+                                    <td>complete</td>
+                                    <td>21/12/2000</td>
+                                    <td><a id="linkHistory" href="#">>></a></td>
+                                    </tr>`;
+                            allTasksCounter++;
+                            completedTasksCounter++;
+                        });
+                        tableDiv.after(listElement)
                     })
-                    tableDiv.after(listElement)
-                })
+                }
             })
+            document.getElementById('allTasks').innerHTML = `${allTasksCounter}`;
+            document.getElementById('completedTasks').innerHTML = `${completedTasksCounter}`;
+            document.getElementById('inProgressTasks').innerHTML = `${inProgressTasksCounter}`;
+            document.getElementById('toDoTasks').innerHTML = `${toDoTasksCounter}`;
         }
 
+        // if (allTasksCounter >= 0) {
+
+        // }
         const dashboardButton = document.querySelector('.nav-link').addEventListener('click', dashBoardProjectList(userProjects))
 
 
@@ -423,22 +452,11 @@
             }
         }
         )
-        function sortTasksByDate(users) {
-            // Iterate through each user
-            users.forEach(user => {
-                // Iterate through each project in userData
-                user.userData.forEach(project => {
-                    // Sort tasks array by dueDate
-                    project.tasks.sort((a, b) => a.dueDate - b.dueDate);
-                });
-            });
-            console.log(users)
-        }
-        sortTasksByDate(users);
+
 
     </script>
 
-    <script src="main.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>

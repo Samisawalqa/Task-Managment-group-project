@@ -12,7 +12,7 @@
     <link href="css/dashboard_style.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
-        .modal{
+        .modal {
             display: none;
         }
     </style>
@@ -21,30 +21,29 @@
 
 <body class="sb-nav-fixed">
     <!-- Top navbar -->
-    <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex justify-content-between">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
-        <!-- ***** Need to link to home page ***** -->
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar => User -->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">User info.</a></li>
-                    <!-- ***** Need to link to user page ***** -->
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
-                    <!-- ***** Need to link to logout page ***** -->
-                </ul>
-            </li>
+        <div class="d-flex ">
+            <!-- ***** Need to link to home page ***** -->
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                    class="fas fa-bars"></i></button>
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li><a class="dropdown-item" href="../index.html">Logout</a></li>
+                    </ul>
+                </li>
 
-        </ul>
+            </ul>
+        </div>
+        <!-- Navbar => User -->
     </nav>
     <!-- Full Body -->
     <div id="layoutSidenav">
@@ -76,7 +75,8 @@
                             </nav>
                         </div>
                         <a class="nav-link" href="note.html">
-                            <div class="sb-nav-link-icon"><i class="fa-regular fa-note-sticky" style="color: #769fcd;"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-regular fa-note-sticky"
+                                    style="color: #769fcd;"></i></div>
                             Notes
                         </a>
                     </div>
@@ -100,8 +100,9 @@
                                 <i class="fas fa-table me-1"></i>
                                 <div>All Projects</div>
                             </div>
-                            <button type="button" class="button" onclick="openFormModal('Add Task')">
-                                <span class="button__text">Add Project</span>
+                            <!-- Button To Add New Project -->
+                            <button type="button" class="button rounded  " onclick="openModal('formModal')">
+                                <span class="button__text w-4">Add </span>
                                 <span class="button__icon rounded"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round"
                                         stroke-linecap="round" stroke="currentColor" height="24" fill="none"
@@ -110,42 +111,138 @@
                                         <line y2="12" y1="12" x2="19" x1="5"></line>
                                     </svg>
                                 </span>
-                                <div id="formModal" class="modal">
+                                <!-- ====================================This is Old PopUp======================================= -->
+                                <!-- <div  class="modal modal-dialog modal-dialog-centered">
+                                    <div>
+                                        <div class="modal-content">
+                                            <span class="close rounded p-2" id="closer" onclick="closeEditFormModal()">x</span>
+                                            
+
+                                            <form id="modalForm" class="modal-form" action="#" method="POST">
+                                                <h2>add new project</h2>
+                                                <label for="nameproject">Project Name :</label>
+                                                <input type="text" id="nameproject" name="projectName" required>
+                                                <label id="projectinputLable" for="Description">Description</label>
+                                                <input id="projectinput" type="text" id="Description" name="Description"
+                                                    required><br><br>
+                                                <input id="send" type="submit" value="Submit">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </button>
+                            <!-- =======================================This is The New Add Project PopUp============================== -->
+                            <div id="formModal" class="modal" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
-                                        <span class="close" onclick="">×</span>
-                                        <form id="modalForm" class="modal-form" action="#" method="POST">
-                                            <h2>add new project</h2>
-                                            <label for="nameproject:">name project:</label><br>
-                                            <input type="text" id="nameproject" name="projectName" required><br>
-                                            <label id="projectinputLable" for="Description">Description</label><br>
-                                            <input id="projectinput" type="text" id="Description" name="Description"
-                                                required><br><br>
-                                            <input id="send" type="submit" value="Submit">
-                                        </form>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Add New Project</h5>
+                                            <button id="closer" type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modalForm" class="modal-form form-floating mb-3" action="#"
+                                                method="POST">
+                                                <input class="form-control" type="text" id="nameproject"
+                                                    name="projectName" required>
+                                                <label for="nameproject">Project Name :</label>
+                                            </form>
+                                            <form id="modalForm" class="modal-form form-floating mb-3" action="#"
+                                                method="POST">
+                                                <input class="form-control" id="projectinput" type="text"
+                                                    id="Description" name="Description" required>
+                                                <label for="Description">Description :</label>
+                                            </form>
+                                            <input class="btn btn-primary w-3" id="send" type="submit" value="Submit">
+                                        </div>
                                     </div>
                                 </div>
-                            </button>
-                            <div id="editFormModal" class="modal">
-                                <div class="modal-content">
-                                    <span class="close" onclick="closeEditFormModal()">×</span>
-                                    <form id="editModalForm" class="modal-form" action="#" method="POST">
-                                        <h2 class="mb-3">Edit Project</h2>
-                                        <div class="form-group">
-                                            <label for="editProjectName">Project Name:</label>
-                                            <input type="text" class="form-control" id="editProjectName" name="projectName"
-                                                required>
+                            </div>
+                            <!-- =======================================This is The New Add Project PopUp End============================== -->
+                            <!-- Edit Popup -->
+                            <div id="editFormModal" class="modal" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Project</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close" onclick="closeEditFormModal()"></button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="editProjectDescription">Description:</label>
-                                            <input type="text" class="form-control" id="editProjectDescription"
-                                                name="Description" required>
+                                        <div class="modal-body">
+                                            <form id="editModalForm" class="modal-form form-floating mb-3" action="#"
+                                                method="POST">
+
+                                                <input type="text" class="form-control" id="editProjectName"
+                                                    name="projectName" required>
+                                                <label for="editProjectName">Project Name:</label>
+                                            </form>
+                                            <form id="editModalForm" class="modal-form form-floating mb-3" action="#"
+                                                method="POST">
+                                                <input type="text" class="form-control" id="editProjectDescription"
+                                                    name="Description" required>
+                                                <label for="editProjectDescription">Description:</label>
+                                            </form>
+                                            <button type="submit" id="editSend" class="btn btn-primary">Submit</button>
                                         </div>
-                                        <button type="submit" id="editSend" class="btn btn-primary">Submit</button>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-
+                            <!-- Edit Popup End -->
+                            <!-- add task popup -->
+                            <div id="taskFormModal" class="modal" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Add Task</h5>
+                                            <button onclick="closetaskFormModal()" type="button" class="btn-close"
+                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modalForm" class="modal-form form-floating mb-3" action="#"
+                                                method="POST">
+                                                <input class="form-control" type="text" id="taskName" name="taskName"
+                                                    required>
+                                                <label for="taskName">Task Name :</label>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button onclick="closetaskFormModal()" type="button"
+                                                class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button id="addTaskButton" type="button" class="btn btn-primary"> Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Edit Task Modal -->
+                        <div id="editTaskFormModal" class="modal" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Task</h5>
+                                        <button onclick="closeModal('editTaskFormModal')" type="button"
+                                            class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editTaskForm" class="modal-form">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" type="text" id="editTaskName"
+                                                    name="editTaskName" required>
+                                                <label for="editTaskName">Task Name :</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button onclick="closeModal('editTaskFormModal')" type="button"
+                                            class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button id="editTaskButton" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- project cards & add tasks -->
                         <div id="to_add_proj" class="card-body">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -154,71 +251,41 @@
                                     <div>"Project Name"</div>
                                 </div>
                                 <div class="bg-danger rounded p-2 btn ">
-                                    <span class="text-light" id="removeProject_btn" > - RemoveProject</span>
-                                    </div>
+                                    <span class="text-light" id="removeProject_btn"> - RemoveProject</span>
+                                </div>
                             </div>
                             <div id="p_cards" class="card-body">
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header card-header d-flex justify-content-between">
-                                            <span>To Do</span>
-                                            <i onclick="onclick" class="fa-solid fa-plus btn" style="color: #769fcd;">
-                                                <div id="formModal" class="modal">
-                                                    <div class="modal-content">
-                                                        <span class="close" onclick="closeFormModal()">×</span>
-                                                        <form id="modalForm" class="modal-form" action="#" method="POST">
-                                                            <h2>add new project</h2>
-                                                            <label for="nameproject:">name project:</label><br>
-                                                            <input type="text" id="nameproject" name="projectName" required><br>
-                                                            <label id="projectinputLable" for="Description">Description</label><br>
-                                                            <input id="projectinput" type="text" id="Description" name="Description"
-                                                                required><br><br>
-                                                            <input id="send" type="submit" value="Submit">
-                                                        </form>
-                                                    </div>
+                                        <span>To Do</span>
+                                        <i onclick="onclick" class="fa-solid fa-plus btn" style="color: #769fcd;">
+                                            <div id="formModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close" onclick="closeFormModal()">×</span>
+                                                    <form id="modalForm" class="modal-form" action="#" method="POST">
+                                                        <h2>add new project</h2>
+                                                        <label for="nameproject:">name project:</label><br>
+                                                        <input type="text" id="nameproject" name="projectName"
+                                                            required><br>
+                                                        <label id="projectinputLable"
+                                                            for="Description">Description</label><br>
+                                                        <input id="projectinput" type="text" id="Description"
+                                                            name="Description" required><br><br>
+                                                        <input id="send" type="submit" value="Submit">
+                                                    </form>
                                                 </div>
-                                            </i>
+                                            </div>
+                                        </i>
                                     </div>
-                                    <ul class="list-group list-group-flush">
-                                        <div class="taskItem ">
-                                            <li class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-
-                                        </div>
-                                        <div>
-                                            <li
-                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                                "Task 1"
-                                                <div>
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </div>
-
-                                            </li>
-                                        </div>
+                                    <ul id="toAddToDoTask" class="list-group list-group-flush">
                                     </ul>
                                 </div>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header d-flex justify-content-between">
-                                        
-                                            <span>In progress</span>
-                                            <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
-                                        
+
+                                        <span>In progress</span>
+                                        <i class="fa-solid fa-plus" style="color: #769fcd;"></i>
+
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <div>
@@ -258,12 +325,12 @@
                                 </div>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-header d-flex justify-content-between">
-                                            <div>
-                                                <span>Completed</span>
-                                            </div>
-                                            <div>
-                                                <i class="fa-solid fa-plus " style="color: #769fcd;"></i>
-                                            </div>
+                                        <div>
+                                            <span>Completed</span>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-plus " style="color: #769fcd;"></i>
+                                        </div>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <div>
@@ -290,32 +357,31 @@
                                         </div>
                                         <div>
                                             <li
-                                            class="list-group-item card-header d-flex justify-content-between align-items-center">
-                                            "Task 1"
-                                            <div>
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                                <i class="fa-solid fa-trash"></i>
-                                            </div>
+                                                class="list-group-item card-header d-flex justify-content-between align-items-center">
+                                                "Task 1"
+                                                <div>
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </div>
 
-                                        </li>
+                                            </li>
                                         </div>
                                     </ul>
                                 </div>
                             </div>
 
                         </div>
-
                     </div>
                 </div>
         </div>
         </main>
         <!-- <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; OCA Team2 &copy; 2024</div>
-                    </div>
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; OCA Team2 &copy; 2024</div>
                 </div>
-            </footer> -->
+            </div>
+        </footer> -->
     </div>
     </div>
     <script src="main.js"></script>
