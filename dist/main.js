@@ -21,7 +21,7 @@ function logOut() {
         activeUser.activeStatus = false; // Update the active status before logging out
     }
     localStorage.setItem('users', JSON.stringify(users));
-    window.location.href = 'login_index.html';
+    window.location.href = '../index.html';
 }
 // Function to open and close modals
 function openModal(modalId) {
