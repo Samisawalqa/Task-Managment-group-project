@@ -17,13 +17,14 @@
     <!-- Top navbar -->
     <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex justify-content-between">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
-        <!-- ***** Need to link to home page ***** -->
-        <!-- Sidebar Toggle-->
         <div class="d-flex ">
+            <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
+            <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                     class="fas fa-bars"></i></button>
-            <!-- Navbar => User -->
+
+        </div>
+        <div class="d-flex ">
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -33,12 +34,12 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li><a class="dropdown-item" href="../index.html">Logout</a></li>
-                        <!-- ***** Need to link to logout page ***** -->
                     </ul>
                 </li>
 
             </ul>
         </div>
+        <!-- Navbar => User -->
     </nav>
     <!-- Full Body -->
     <div id="layoutSidenav">
@@ -63,7 +64,7 @@
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="projects.html"><i class="fa-solid fa-plus"></i> Projects
+                                <a class="nav-link" href="projects.html">Projects
                                     Cards</a>
                                 <div>
 
@@ -133,17 +134,17 @@
                                             class="fas fa-search"></i></button>
                                 </div>
                             </form>
-                            <select id="sort-by">
-                                <option id="to_do" value="status1">To Do</option>
-                                <option id="Inprogress" value="status2">Inprogress</option>
-                                <option id="Completed" value="status3">Completed</option>
-                                <option id="all" value="">All</option>
-                                <option id="Older_to_Newer" value="due-date">Older to Newer</option>
-                                <option id="Newer_to_older" value="due-date">Newer to older</option>
+                            <!-- ============================================================================================================ -->
+
+                            <select name="sort-by">
+                                <option id="all" value="all">All</option>
+                                <option id="to_do" value="toDo">To Do</option>
+                                <option id="Inprogress" value="inProgress">Inprogress</option>
+                                <option id="Completed" value="complete">Completed</option>
                             </select>
+                            <!-- ============================================================================================================ -->
                         </div>
                         <div class="card-body">
-
                             <!-- Need to make 
                                 filter & sort  -->
                             <table class="table table-bordered">
@@ -245,6 +246,7 @@
         const sort_by_select = document.getElementById('sort-by')
         const all_option = document.getElementById('all')
         const Inprogress_option = document.getElementById('Inprogress')
+        const toDo_option = document.getElementById('to_do')
         const Completed_option = document.getElementById('Completed')
         const Older_to_Newer_option = document.getElementById('Older_to_Newer')
         const Newer_to_older_option = document.getElementById('Newer_to_older')
@@ -292,166 +294,227 @@
 
         const tableDiv = document.querySelector('.table-bordered thead')
         const userProjects = JSON.parse(localStorage.getItem('users'));
+
+
         let allTasksCounter = 0;
         let inProgressTasksCounter = 0;
         let completedTasksCounter = 0;
         let toDoTasksCounter = 0;
+
         const listElement = document.createElement('tbody')
+        var selectElement = document.querySelector('[name=sort-by]');
+        var optionValues = [...selectElement.options].map(o => o.value)
+        var selectedValueName = 'all';
+
+        selectElement.addEventListener('change', function () {
+            var selectedValue = this.value;
+            selectedValueName = selectedValue;
+            console.log(selectedValue);
+            dashBoardProjectList(userProjects);
+        });
         function dashBoardProjectList(users) {
+            let htmlContent = ''; // Temporary variable to accumulate HTML content
+
             users.forEach(user => {
-                if (user.activeStatus == true) {
-                    user.projects.forEach(project => {
-                        project.categories['toDo'].forEach(task => {
+                if (user.activeStatus === true) {
+                    if (selectedValueName === 'all') {
 
-                            listElement.innerHTML += `<tr>
-                                    <td>${project.projectName}</td>
-                                    <td class="tItem">${task}</td>
-                                    <td>To Do</td>
-                                    <td>21/12/2000</td>
-                                    <td><a id="linkHistory" href="#">>></a></td>
-                                    </tr>`;
-                            allTasksCounter++;
-                            toDoTasksCounter++;
+                        user.projects.forEach(project => {
+                            toDoTasksCounter += project.categories['toDo'].length;
+                            completedTasksCounter += project.categories['complete'].length;
+                            inProgressTasksCounter += project.categories['inProgress'].length;
 
+                            project.categories['toDo'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>To Do</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
+
+                            project.categories['inProgress'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>In progress</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
+
+                            project.categories['complete'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>Complete</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
                         });
-                        project.categories['inProgress'].forEach(task => {
+                    }
 
-                            listElement.innerHTML += `<tr>
-                                    <td>${project.projectName}</td>
-                                    <td class="tItem">${task}</td>
-                                    <td>Inprogress</td>
-                                    <td>21/12/2000</td>
-                                    <td><a id="linkHistory" href="#">>></a></td>
-                                    </tr>`;
-                            allTasksCounter++;
-                            inProgressTasksCounter++;
+                    if (selectedValueName === 'toDo') {
+                        user.projects.forEach(project => {
+                            toDoTasksCounter += project.categories['toDo'].length;
+                            completedTasksCounter += project.categories['complete'].length;
+                            inProgressTasksCounter += project.categories['inProgress'].length;
 
+                            project.categories['toDo'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>To Do</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
                         });
-                        project.categories['complete'].forEach(task => {
+                    }
 
-                            listElement.innerHTML += `<tr>
-                                    <td>${project.projectName}</td>
-                                    <td class="tItem">${task}</td>
-                                    <td>Completed</td>
-                                    <td>21/12/2000</td>
-                                    <td><a id="linkHistory" href="#">>></a></td>
-                                    </tr>`;
-                            allTasksCounter++;
-                            completedTasksCounter++;
+                    if (selectedValueName === 'inProgress') {
+                        user.projects.forEach(project => {
+                            toDoTasksCounter += project.categories['toDo'].length;
+                            completedTasksCounter += project.categories['complete'].length;
+                            inProgressTasksCounter += project.categories['inProgress'].length;
+
+                            project.categories['inProgress'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>In progress</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
                         });
-                        tableDiv.after(listElement)
-                    })
+                    }
+
+                    if (selectedValueName === 'complete') {
+                        user.projects.forEach(project => {
+                            toDoTasksCounter += project.categories['toDo'].length;
+                            completedTasksCounter += project.categories['complete'].length;
+                            inProgressTasksCounter += project.categories['inProgress'].length;
+
+                            project.categories['complete'].forEach(task => {
+                                htmlContent += `<tr>
+                            <td>${project.projectName}</td>
+                            <td class="tItem">${task}</td>
+                            <td>Complete</td>
+                            <td>21/12/2000</td>
+                            <td><a id="linkHistory" href="#">>></a></td>
+                            </tr>`;
+                            });
+                        });
+                    }
                 }
-            })
-            document.getElementById('allTasks').innerHTML = `${allTasksCounter}`;
-            document.getElementById('completedTasks').innerHTML = `${completedTasksCounter}`;
-            document.getElementById('inProgressTasks').innerHTML = `${inProgressTasksCounter}`;
-            document.getElementById('toDoTasks').innerHTML = `${toDoTasksCounter}`;
+            });
+
+            listElement.innerHTML = htmlContent; // Assign accumulated content at once
+            tableDiv.after(listElement); // Ensure this line is outside the loop
         }
 
-        // if (allTasksCounter >= 0) {
 
-        // }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('allTasks').innerHTML = completedTasksCounter + inProgressTasksCounter + toDoTasksCounter;
+            document.getElementById('completedTasks').innerHTML = completedTasksCounter;
+            document.getElementById('inProgressTasks').innerHTML = inProgressTasksCounter;
+            document.getElementById('toDoTasks').innerHTML = toDoTasksCounter;
+        })
+
+
+
         const dashboardButton = document.querySelector('.nav-link').addEventListener('click', dashBoardProjectList(userProjects))
 
 
-        const search_input = document.querySelector('.form-control')
+        // const search_input = document.querySelector('.form-control')
 
-        search_input.addEventListener('input', e => {
-            sort_by_select.value = '';
-            const value = e.target.value.toLowerCase();
-            document.querySelector('tbody').innerHTML = ''
-            users.forEach(user => {
-                user.userData.forEach(project => {
-                    const taskArray = project.tasks.map(x => x.taskName)
-                    console.log(taskArray)
-                    if (project.projectName.toLowerCase().includes(value)) {
-                        project.tasks.forEach(task => {
-                            let statusArray = ['Completed', 'To Do', 'Inprogress']
-                            let activeStatus = statusArray.indexOf(task.status)
-                            listElement.innerHTML += `<tr>
-                        <td>${project.projectName}</td>
-                        <td>${task.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${task.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
-                        })
-                        tableDiv.after(listElement)
-                    } else {
-                        project.tasks.forEach(task => {
-                            if (task.taskName.toLowerCase().includes(value)) {
-                                let statusArray = ['Completed', 'To Do', 'Inprogress']
-                                let activeStatus = statusArray.indexOf(task.status)
-                                listElement.innerHTML += `<tr>
-                        <td>${project.projectName}</td>
-                        <td>${task.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${task.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
-                            }
+        // search_input.addEventListener('input', e => {
+        //     sort_by_select.value = '';
+        //     const value = e.target.value.toLowerCase();
+        //     document.querySelector('tbody').innerHTML = ''
+        //     users.forEach(user => {
+        //         user.projects.forEach(project => {
+        //             const taskArray = project.tasks.map(x => x.taskName)
 
-                        })
-                        tableDiv.after(listElement)
-                    }
-                })
-            })
-        })
+        //             if (project.projectName.toLowerCase().includes(value)) {
+        //                 project.tasks.forEach(task => {
+        //                     let statusArray = ['Completed', 'To Do', 'Inprogress']
+        //                     let activeStatus = statusArray.indexOf(task.status)
+        //                     listElement.innerHTML += `<tr>
+        //                 <td>${project.projectName}</td>
+        //                 <td>${task.taskName}</td>
+        //                 <td>
+        //                     <select>
+        //                         <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+        //                         <option value="option2">${statusArray.pop()}</option>
+        //                         <option value="option3">${statusArray.pop()}</option>
+        //                         </select>
+        //                         </td>
+        //                         <td>${task.dueDate}</td>
+        //                         <td><a id="linkHistory" href="#">>></a></td>
+        //                         </tr>`
+        //                 })
+        //                 tableDiv.after(listElement)
+        //             } else {
+        //                 project.tasks.forEach(task => {
+        //                     if (task.taskName.toLowerCase().includes(value)) {
+        //                         let statusArray = ['Completed', 'To Do', 'Inprogress']
+        //                         let activeStatus = statusArray.indexOf(task.status)
+        //                         listElement.innerHTML += `<tr>
+        //                 <td>${project.projectName}</td>
+        //                 <td>${task.taskName}</td>
+        //                 <td>
+        //                     <select>
+        //                         <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
+        //                         <option value="option2">${statusArray.pop()}</option>
+        //                         <option value="option3">${statusArray.pop()}</option>
+        //                         </select>
+        //                         </td>
+        //                         <td>${task.dueDate}</td>
+        //                         <td><a id="linkHistory" href="#">>></a></td>
+        //                         </tr>`
+        //                     }
 
-        //// sort by status
+        //                 })
+        //                 tableDiv.after(listElement)
+        //             }
+        //         })
+        //     })
+        // })
 
-        sort_by_select.addEventListener('click', e => {
-            document.querySelector('.form-control').value = ''
-            let status_id = e.target.getAttribute('id')
-            if (status_id === 'all') {
-                document.querySelector('tbody').innerHTML = ''
-                dashBoardProjectList(userProjects)
-                search_input.value = ''
-            } else if (status_id === 'to_do' || status_id === 'Inprogress' || status_id === 'Completed') {
-                document.querySelector('tbody').innerHTML = ''
-                users.forEach(user => {
-                    user.userData.forEach(project => {
-                        project.tasks.forEach(task => {
-                            let statusArray = ['Completed', 'To Do', 'Inprogress']
-                            let activeStatus = statusArray.indexOf(task.status)
-                            if (e.target.innerHTML === task.status) {
-                                listElement.innerHTML += `<tr>
-                        <td>${project.projectName}</td>
-                        <td>${task.taskName}</td>
-                        <td>
-                            <select>
-                                <option value="option1">${statusArray.splice(activeStatus, 1)}</option>
-                                <option value="option2">${statusArray.pop()}</option>
-                                <option value="option3">${statusArray.pop()}</option>
-                                </select>
-                                </td>
-                                <td>${task.dueDate}</td>
-                                <td><a id="linkHistory" href="#">>></a></td>
-                                </tr>`
-                            }
-                        })
-                        tableDiv.after(listElement)
-                    })
-                })
+        // //// sort by status
 
-            } else if (status_id === 'Older_to_Newer') {
-                sortTasksByDate(users);
-            }
-        }
-        )
+        // toDo_option.addEventListener('click', e => {
+        //     document.querySelector('.form-control').value = ''
+        //     document.querySelector('tbody').innerHTML = ''
+        //     users.forEach(user => {
+        //         if (user.activeStatus == true) {
+        //             user.projects.forEach(project => {
+        //                 project.categories['toDo'].forEach(task => {
+
+        //                     listElement.innerHTML += `<tr>
+        //                             <td>${project.projectName}</td>
+        //                             <td class="tItem">${task}</td>
+        //                             <td>To Do</td>
+        //                             <td>21/12/2000</td>
+        //                             <td><a id="linkHistory" href="#">>></a></td>
+        //                             </tr>`;
+        //                     allTasksCounter++;
+        //                     toDoTasksCounter++;
+
+        //                 });
+        //                 tableDiv.after(listElement)
+        //             })
+        //         }
+        //     })
+
+        // }
+
+        // )
 
 
     </script>

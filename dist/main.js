@@ -5,14 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Retrieve users from local storage and get the active user
 const users = JSON.parse(localStorage.getItem('users'));
-// let projectCounter = 0;
-// let taskCounter = 0;
+
 if (users) {
     var activeUser = users.find(user => user.activeStatus === true);
+    if (!activeUser) {
+        alert('No user is signed in.');
+        window.location.href = 'login_index.html';
+    }
 } else {
-    alert('There are no users in local storage');
+    alert('No user is signed in.');
+    window.location.href = 'login_index.html';
 }
-
+function logOut() {
+    if (activeUser) {
+        activeUser.activeStatus = false; // Update the active status before logging out
+    }
+    localStorage.setItem('users', JSON.stringify(users));
+    window.location.href = 'login_index.html';
+}
 // Function to open and close modals
 function openModal(modalId) {
     document.getElementById(modalId).style.display = 'block';
@@ -39,6 +49,11 @@ if (send != null) {
 
         const projectName = document.getElementById('nameproject').value;
         const projectDescription = document.getElementById('projectinput').value;
+
+        if (!projectName || !projectDescription) {
+            alert("Please enter a project name and description.");
+            return;
+        }
 
         if (!activeUser) {
             alert("No user is signed in.");
@@ -179,6 +194,7 @@ if (editSend != null) {
     });
 
 }
+// add task
 let addTaskButton = document.getElementById('addTaskButton');
 if (addTaskButton != null) {
     addTaskButton.addEventListener('click', (e) => {
@@ -187,7 +203,10 @@ if (addTaskButton != null) {
         const taskName = document.getElementById('taskName').value;
         const projectIndex = document.getElementById('addTaskButton').getAttribute('data-project-index');
         const category = document.getElementById('addTaskButton').getAttribute('data-category');
-
+        if (taskName === '') {
+            alert("Please enter a task name.");
+            return;
+        }
         if (!activeUser || !activeUser.projects || !activeUser.projects[projectIndex]) {
             alert("No user or projects found.");
             return;
@@ -203,6 +222,7 @@ if (addTaskButton != null) {
     });
 
 }
+
 // remove project
 function removeProject(index) {
     if (activeUser && activeUser.projects) {

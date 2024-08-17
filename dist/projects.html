@@ -23,12 +23,14 @@
     <!-- Top navbar -->
     <nav id="navcolor" class="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex justify-content-between">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
         <div class="d-flex ">
-            <!-- ***** Need to link to home page ***** -->
+            <a class="navbar-brand ps-3" href="dashboard.html">Tasks Buddy</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                     class="fas fa-bars"></i></button>
+
+        </div>
+        <div class="d-flex ">
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -68,7 +70,7 @@
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="projects.html"><i class="fa-solid fa-plus"></i> Projects
+                                <a class="nav-link" href="projects.html"> Projects
                                     Cards</a>
                                 <div> <!-- To add created projects -->
                                 </div>
@@ -153,7 +155,10 @@
                                                     id="Description" name="Description" required>
                                                 <label for="Description">Description :</label>
                                             </form>
-                                            <input class="btn btn-primary w-3" id="send" type="submit" value="Submit">
+                                            <div class="d-flex justify-content-end">
+                                                <input class="btn btn-primary w-3" id="send" type="submit"
+                                                    value="Submit">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
